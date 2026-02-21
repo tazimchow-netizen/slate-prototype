@@ -473,22 +473,26 @@ body {
 .btn-feedback {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 6px;
     padding: 6px 12px;
-    background-color: var(--color-surface);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    border: none;
     border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-base);
     text-decoration: none;
-    font-size: 0.875rem;
+    box-shadow: none;
 }
 
 .btn-feedback:hover {
-    background-color: var(--color-background);
-    border-color: var(--color-text);
+    background-color: var(--color-accent-hover);
+    color: var(--color-background);
+    transform: none;
+    box-shadow: none;
 }
 
 .btn-primary {
