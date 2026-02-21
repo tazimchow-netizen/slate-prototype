@@ -135,7 +135,7 @@ function handleFormSubmit(email, password) {
 
   localStorage.setItem('slate-user-email', email);
 
-  window.location.href = '../dashboard.html';
+  window.location.href = 'dashboard.html';
 }
 
 emailInput.addEventListener('blur', () => {
