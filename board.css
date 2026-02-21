@@ -74,19 +74,27 @@ body {
     max-width: 1440px;
     margin: 0 auto;
     height: 100%;
-    padding: 0 var(--space-xl);
+    padding-left: var(--space-xl);
+    padding-right: var(--space-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .header-left,
-.header-center,
-.header-right {
+.header-center {
     display: flex;
     align-items: center;
     gap: var(--space-md);
 }
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
 
 .logo {
     display: flex;
