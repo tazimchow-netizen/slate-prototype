@@ -482,6 +482,7 @@ body {
 .form-footer {
     display: flex;
     justify-content: flex-start;
+    margin-top: calc(var(--space-md) * -0.6);
     margin-bottom: var(--space-md);
 }
 
