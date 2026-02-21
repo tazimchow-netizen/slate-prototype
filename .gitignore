@@ -1,0 +1,17 @@
+# macOS System
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# AI Agent Scripts
+.agent/
+.agents/
+_agents/
+_agent/
+
+# Environment Variables
+.env
+.env.local
+
+# Node/Web Build 
+node_modules/

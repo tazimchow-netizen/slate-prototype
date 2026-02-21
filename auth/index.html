@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Sign in to Slate - Your visual workspace for brainstorming and organizing projects">
+    <title>Sign In - Slate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-theme="light">
+    <header class="header">
+        <div class="header-content">
+            <button class="logo" id="logoButton" aria-label="Go to Slate home">
+                <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="7" height="7" x="3" y="3" rx="1" />
+                    <rect width="7" height="7" x="14" y="3" rx="1" />
+                    <rect width="7" height="7" x="14" y="14" rx="1" />
+                    <rect width="7" height="7" x="3" y="14" rx="1" />
+                </svg>
+                <span class="logo-text">Slate</span>
+            </button>
+
+            <button class="auth-toggle-header" id="authToggle" aria-label="Toggle between Sign In and Sign Up">
+                <span id="toggleText">Sign up</span>
+
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Left Panel: Hero Section -->
+        <section class="hero-panel">
+            <div class="hero-content">
+                <h1 class="hero-title">Organize your ideas visually</h1>
+                <p class="hero-description">
+                    Slate is your infinite canvas for brainstorming and organizing projects.
+                    Add notes, images, links, shapes, drawings, and checklists, all in one clean workspace.
+                </p>
+
+                <div class="features-list">
+                    <div class="feature-item">
+                        <svg class="feature-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="5 9 2 12 5 15" />
+                            <polyline points="9 5 12 2 15 5" />
+                            <polyline points="15 19 12 22 9 19" />
+                            <polyline points="19 15 22 12 19 9" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <span>Drag, resize, and organize freely</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg class="feature-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 13v8" />
+                            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                            <path d="m8 17 4-4 4 4" />
+                        </svg>
+                        <span>Auto-save every change</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg class="feature-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3" />
+                            <circle cx="6" cy="12" r="3" />
+                            <circle cx="18" cy="19" r="3" />
+                            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                        </svg>
+                        <span>Share boards with view-only links</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Right Panel: Authentication Form -->
+        <section class="auth-panel">
+            <div class="auth-container">
+                <!-- Form -->
+                <form class="auth-form" id="authForm" novalidate>
+                    <div class="form-header">
+                        <h2 class="form-title" id="formTitle">Welcome back</h2>
+                        <p class="form-subtitle" id="formSubtitle">Sign in to continue to your boards</p>
+                    </div>
+
+                    <!-- Google OAuth Button -->
+                    <button type="button" class="btn-google" id="googleBtn">
+                        <svg class="google-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.6 10.227c0-.709-.064-1.39-.182-2.045H10v3.868h5.382a4.6 4.6 0 01-1.996 3.018v2.51h3.232c1.891-1.742 2.982-4.305 2.982-7.35z"
+                                fill="#4285F4" />
+                            <path
+                                d="M10 20c2.7 0 4.964-.895 6.618-2.423l-3.232-2.509c-.895.6-2.04.955-3.386.955-2.605 0-4.81-1.76-5.595-4.123H1.064v2.59A9.996 9.996 0 0010 20z"
+                                fill="#34A853" />
+                            <path
+                                d="M4.405 11.9c-.2-.6-.314-1.24-.314-1.9 0-.66.114-1.3.314-1.9V5.51H1.064A9.996 9.996 0 000 10c0 1.614.386 3.14 1.064 4.49l3.34-2.59z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M10 3.977c1.468 0 2.786.505 3.823 1.496l2.868-2.868C14.959.99 12.695 0 10 0 6.09 0 2.71 2.24 1.064 5.51l3.34 2.59C5.19 5.736 7.395 3.977 10 3.977z"
+                                fill="#EA4335" />
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required
+                            autocomplete="email">
+                        <span class="form-error" id="emailError"></span>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password"
+                            required autocomplete="current-password">
+                        <span class="form-error" id="passwordError"></span>
+                    </div>
+
+                    <!-- Confirm Password Input (Hidden by default) -->
+                    <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                        <label for="confirmPassword" class="form-label">Confirm password</label>
+                        <input type="password" id="confirmPassword" class="form-input"
+                            placeholder="Confirm your password" autocomplete="new-password">
+                        <span class="form-error" id="confirmPasswordError"></span>
+                    </div>
+
+
+                    <div class="form-footer" id="forgotPasswordLink">
+                        <a href="#" class="link-text">Forgot password?</a>
+                    </div>
+
+
+                    <div class="remember-me" id="rememberMeGroup">
+                        <label class="remember-label">
+                            <input type="checkbox" id="rememberMe" class="remember-checkbox">
+                            <span class="remember-text">Remember me</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        Sign In
+                    </button>
+
+                    <!-- Guest Access -->
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+
+                    <a href="../dashboard.html" class="btn-guest" id="guestBtn">
+                        Continue as Guest
+                    </a>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
