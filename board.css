@@ -1575,11 +1575,20 @@ body {
 @media (max-width: 768px) {
     .board-header-content {
         padding: 0 var(--space-sm);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .header-left,
+    .header-left {
+        gap: var(--space-sm);
+        min-width: 0;
+        flex: 1;
+    }
+
     .header-right {
         gap: var(--space-xs);
+        flex-shrink: 0;
     }
 
     .header-center {
@@ -1589,6 +1598,7 @@ body {
     .logo {
         padding: var(--space-xs);
         gap: 4px;
+        flex-shrink: 0;
     }
 
     .logo-text {
@@ -1661,52 +1671,89 @@ body {
     }
 
     .board-title {
-        max-width: 120px;
+        max-width: none;
+        width: 100%;
         font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .divider-vertical {
+        height: 16px;
+        margin: 0 4px;
     }
 }
 
 @media (max-width: 600px) {
-
-    .btn-feedback span {
+    .logo-text {
         display: none;
     }
 
-    .share-btn span {
-        display: inline-block;
-        margin-left: 4px;
-    }
-
-    .btn-feedback {
-        padding: 0 10px;
-        min-width: 40px;
-    }
-
-    .share-btn {
-        padding: 0 14px;
-        min-width: auto;
-    }
-
-    .divider-vertical {
-        margin: 0 4px;
+    .header-left {
+        gap: 4px;
+        min-width: 0;
     }
 
     .header-right {
         gap: 4px;
     }
-}
 
-@media (max-width: 400px) {
-    .board-header-content {
-        padding: 0 8px;
+    .btn-feedback {
+        display: none;
     }
 
-    .logo-text {
+    .share-btn span {
+        display: inline-block;
+        margin-left: 2px;
+        font-size: 0.85rem;
+    }
+
+    .share-btn {
+        padding: 0 10px;
+        height: 32px;
+    }
+
+    .user-menu-btn {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
+
+    .user-menu-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .divider-vertical {
         display: none;
     }
 
     .board-title {
-        max-width: 80px;
+        font-size: 0.85rem;
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 400px) {
+    .board-header-content {
+        padding: 0 4px;
+    }
+
+    .board-title {
+        max-width: 90px;
+    }
+
+    .header-right {
+        gap: 4px;
+    }
+
+    .share-btn {
+        padding: 0 8px;
+    }
+
+    .share-btn span {
+        font-size: 0.8rem;
     }
 
     .left-toolbar {

@@ -1637,12 +1637,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const saveStatus = document.querySelector('.save-status');
                 if (saveStatus) {
-                    const icon = saveStatus.querySelector('svg');
-                    const text = saveStatus.querySelector('span');
-
-                    const originalStatusText = text.textContent;
-                    text.textContent = 'Link copied to clipboard';
-                    if (icon) icon.style.display = 'none';
+                    const originalStatusText = saveStatus.textContent;
+                    saveStatus.textContent = 'Link copied to clipboard';
 
                     saveStatus.classList.remove('show');
                     void saveStatus.offsetWidth;
@@ -1651,8 +1647,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         saveStatus.classList.remove('show');
                         setTimeout(() => {
-                            text.textContent = originalStatusText;
-                            if (icon) icon.style.display = 'block';
+                            saveStatus.textContent = originalStatusText;
                         }, 300);
                     }, 3000);
                 }
@@ -1660,7 +1655,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     shareBtn.textContent = originalText;
                     shareBtn.classList.remove('copied');
-                }, 2000);
+                }, 3000);
             } catch (err) {
                 console.error('Failed to copy link', err);
             }
