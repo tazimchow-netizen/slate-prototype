@@ -153,7 +153,7 @@ function makeElementDraggable(element) {
             e.target.tagName === 'INPUT' ||
             e.target.tagName === 'TEXTAREA' ||
             e.target.contentEditable === 'true' ||
-            e.target.closest('button, a')) {
+            e.target.closest('button, a, .link-item, .link-icon')) {
             return;
         }
 
