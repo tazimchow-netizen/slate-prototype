@@ -159,6 +159,16 @@ function makeElementDraggable(element) {
         const currentTool = document.body.dataset.currentTool;
         if (currentTool !== 'select') return;
 
+        // On mobile, if already selected, we want to allow the event to pass
+        // to our "Tap to Edit" listener in board.js which will call focus.
+        if (element.classList.contains('selected') &&
+            element.classList.contains('canvas-text') &&
+            e.pointerType === 'touch') {
+            // Don't preventDefault, but still start drag
+            startDrag(e, element);
+            return;
+        }
+
         e.preventDefault();
         startDrag(e, element);
     });

@@ -671,14 +671,44 @@ function applyCommandToAll(element, command) {
         const afterBold = document.queryCommandState('bold');
         if (afterBold === beforeState.bold) {
             // execCommand seems to have failed to toggle, do it manually
-            element.style.fontWeight = beforeState.bold ? 'normal' : 'bold';
+            const newBold = !beforeState.bold;
+            element.style.fontWeight = newBold ? 'bold' : 'normal';
+
+            // Strip nested bold tags if we are un-bolding
+            if (!newBold) {
+                const nestedBold = element.querySelectorAll('b, strong, [style*="font-weight: bold"], [style*="font-weight: 700"]');
+                nestedBold.forEach(b => {
+                    const parent = b.parentNode;
+                    if (b.tagName === 'B' || b.tagName === 'STRONG') {
+                        while (b.firstChild) parent.insertBefore(b.firstChild, b);
+                        parent.removeChild(b);
+                    } else {
+                        b.style.fontWeight = '';
+                    }
+                });
+            }
         } else {
             element.style.fontWeight = afterBold ? 'bold' : 'normal';
         }
     } else if (command === 'italic') {
         const afterItalic = document.queryCommandState('italic');
         if (afterItalic === beforeState.italic) {
-            element.style.fontStyle = beforeState.italic ? 'normal' : 'italic';
+            const newItalic = !beforeState.italic;
+            element.style.fontStyle = newItalic ? 'italic' : 'normal';
+
+            // Strip nested italic tags if we are un-italicizing
+            if (!newItalic) {
+                const nestedItalic = element.querySelectorAll('i, em, [style*="font-style: italic"]');
+                nestedItalic.forEach(i => {
+                    const parent = i.parentNode;
+                    if (i.tagName === 'I' || i.tagName === 'EM') {
+                        while (i.firstChild) parent.insertBefore(i.firstChild, i);
+                        parent.removeChild(i);
+                    } else {
+                        i.style.fontStyle = '';
+                    }
+                });
+            }
         } else {
             element.style.fontStyle = afterItalic ? 'italic' : 'normal';
         }
@@ -952,6 +982,30 @@ function createMockTextElement(x, y) {
         window.DragResize.makeElementDraggable(textEl);
         window.DragResize.makeElementResizable(textEl);
     }
+
+    // Tap to edit for mobile (replaces unreliable dblclick)
+    textEl.addEventListener('pointerdown', (e) => {
+        // If already selected, enter edit mode on next pointerdown
+        if (textEl.classList.contains('selected') && textEl.contentEditable !== 'true') {
+            const currentTool = document.body.dataset.currentTool;
+            if (currentTool === 'select') {
+                e.stopPropagation();
+                // We don't want to preventDefault here as it might block focus
+                textEl.contentEditable = true;
+                textEl.focus();
+
+                // Set cursor to the end
+                const range = document.createRange();
+                range.selectNodeContents(textEl);
+                range.collapse(false);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                showTextToolbar(textEl);
+            }
+        }
+    });
 
     textEl.addEventListener('dblclick', (e) => {
         e.stopPropagation();
