@@ -496,7 +496,8 @@ function restoreSelection() {
     }
 }
 
-fmtColorBtn.addEventListener('click', (e) => {
+fmtColorBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     e.stopPropagation();
     saveSelection();
     const sizeDD = textFormatToolbar.querySelector('#fmtSizeDropdown');
@@ -517,6 +518,10 @@ fmtColorBtn.addEventListener('click', (e) => {
     }
 });
 
+fmtColorBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
 const swatches = Array.from(fmtColorPanel.querySelectorAll('.fmt-swatch'));
 swatches.forEach((swatch, idx) => {
     const handleAction = () => {
@@ -526,10 +531,13 @@ swatches.forEach((swatch, idx) => {
         fmtColorBtn.focus();
     };
 
-    swatch.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
-    swatch.addEventListener('click', (e) => {
+    swatch.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         handleAction();
+    });
+    swatch.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 
     swatch.addEventListener('keydown', (e) => {
@@ -692,9 +700,14 @@ function toggleSizeDropdown(forceClose = false) {
     }
 }
 
-fmtSizeBtn.addEventListener('click', (e) => {
+fmtSizeBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     e.stopPropagation();
     toggleSizeDropdown();
+});
+
+fmtSizeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
 fmtSizeBtn.addEventListener('keydown', (e) => {
@@ -722,10 +735,13 @@ sizeOptions.forEach((opt, idx) => {
         fmtSizeBtn.focus();
     };
 
-    opt.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
-    opt.addEventListener('click', (e) => {
+    opt.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         selectOption();
+    });
+    opt.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 
     opt.addEventListener('keydown', (e) => {
@@ -779,13 +795,18 @@ document.addEventListener('pointerdown', (e) => {
     }
 });
 
-document.getElementById('fmtListBtn').addEventListener('click', (e) => {
+document.getElementById('fmtListBtn').addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (currentTextElement) {
         currentTextElement.focus();
         document.execCommand('insertUnorderedList');
         updateToolbarState();
     }
+});
+
+document.getElementById('fmtListBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
 textFormatToolbar.addEventListener('pointerdown', (e) => {
