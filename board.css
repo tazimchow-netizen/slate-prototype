@@ -1141,7 +1141,6 @@ body {
     gap: 8px;
     min-height: 180px;
     min-width: 200px;
-    overflow: hidden;
 }
 
 .image-title {
