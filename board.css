@@ -74,8 +74,7 @@ body {
     max-width: 1440px;
     margin: 0 auto;
     height: 100%;
-    padding-left: var(--space-xl);
-    padding-right: var(--space-xs);
+    padding: 0 var(--space-md);
     display: flex;
     justify-content: space-between;
     align-items: center;

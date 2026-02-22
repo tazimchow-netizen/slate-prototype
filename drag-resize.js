@@ -152,7 +152,8 @@ function makeElementDraggable(element) {
             e.target.classList.contains('rotation-line') ||
             e.target.tagName === 'INPUT' ||
             e.target.tagName === 'TEXTAREA' ||
-            e.target.contentEditable === 'true') {
+            e.target.contentEditable === 'true' ||
+            e.target.closest('button, a')) {
             return;
         }
 
