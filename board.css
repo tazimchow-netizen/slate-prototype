@@ -144,9 +144,10 @@ body {
 }
 
 .header-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
 }
 
 .toolbar-group {
@@ -1672,12 +1673,10 @@ body {
     }
 
     .board-title {
-        max-width: none;
-        width: 100%;
-        font-size: 0.9rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 140px;
+        font-size: 0.85rem;
+        margin-right: 8px;
+        /* Buffer for right buttons */
     }
 
     .divider-vertical {

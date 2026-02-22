@@ -601,11 +601,14 @@ function applyTextColor(color) {
     currentTextElement.contentEditable = true;
     currentTextElement.focus();
 
+    const sel = window.getSelection();
     if (savedSelection) {
-        const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(savedSelection);
     }
+
+    const hasExplicitSelection = sel.rangeCount > 0 && !sel.isCollapsed &&
+        currentTextElement.contains(sel.anchorNode);
 
     if (hasExplicitSelection) {
         document.execCommand('foreColor', false, color);
@@ -613,7 +616,24 @@ function applyTextColor(color) {
         // Apply to whole element as fallback
         currentTextElement.style.color = color;
 
-        // Also try logic for sub-elements if any
+        // Strip nested color tags that might "shield" the element style
+        const nestedFonts = currentTextElement.querySelectorAll('font[color]');
+        nestedFonts.forEach(f => {
+            const parent = f.parentNode;
+            while (f.firstChild) parent.insertBefore(f.firstChild, f);
+            parent.removeChild(f);
+        });
+
+        const nestedSpans = currentTextElement.querySelectorAll('span[style*="color"]');
+        nestedSpans.forEach(s => {
+            s.style.color = '';
+            if (s.style.length === 0) {
+                const parent = s.parentNode;
+                while (s.firstChild) parent.insertBefore(s.firstChild, s);
+                parent.removeChild(s);
+            }
+        });
+
         const range = document.createRange();
         range.selectNodeContents(currentTextElement);
         sel.removeAllRanges();
@@ -639,15 +659,29 @@ function applyCommandToAll(element, command) {
     range.selectNodeContents(element);
     sel.removeAllRanges();
     sel.addRange(range);
+    const beforeState = {
+        bold: element.style.fontWeight === 'bold',
+        italic: element.style.fontStyle === 'italic'
+    };
+
     document.execCommand(command);
 
-    // Direct style fallbacks for mobile
+    // Direct style fallbacks for mobile - more robust toggling
     if (command === 'bold') {
-        const isBold = document.queryCommandState('bold');
-        element.style.fontWeight = isBold ? 'bold' : 'normal';
+        const afterBold = document.queryCommandState('bold');
+        if (afterBold === beforeState.bold) {
+            // execCommand seems to have failed to toggle, do it manually
+            element.style.fontWeight = beforeState.bold ? 'normal' : 'bold';
+        } else {
+            element.style.fontWeight = afterBold ? 'bold' : 'normal';
+        }
     } else if (command === 'italic') {
-        const isItalic = document.queryCommandState('italic');
-        element.style.fontStyle = isItalic ? 'italic' : 'normal';
+        const afterItalic = document.queryCommandState('italic');
+        if (afterItalic === beforeState.italic) {
+            element.style.fontStyle = beforeState.italic ? 'normal' : 'italic';
+        } else {
+            element.style.fontStyle = afterItalic ? 'italic' : 'normal';
+        }
     }
 
     // On some mobile devices, we need to ensure the toolbar stays relevant
