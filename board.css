@@ -71,26 +71,43 @@ body {
 }
 
 .board-header-content {
-    max-width: 1440px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     height: 100%;
-    padding: 0 var(--space-md);
+    padding: 0;
+    /* Removing hardcoded padding to allow flex elements to hit the edge */
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
+    /* Stretch to fill height */
 }
 
-.header-left,
-.header-center {
+.header-left {
     display: flex;
     align-items: center;
     gap: var(--space-md);
+    justify-content: flex-start;
+    /* Explicitly requested by user */
+    padding-left: var(--space-md);
+    /* Match the toolbar margin if any, or flush */
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    flex: 1;
+    min-width: 0;
 }
 
 .header-right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    /* Explicitly requested by user */
     gap: 8px;
+    padding-right: var(--space-md);
 }
 
 .header-actions {
@@ -1628,7 +1645,6 @@ body {
         -webkit-overflow-scrolling: touch;
         z-index: 1000;
         scrollbar-width: none;
-        /* Hide scrollbar for Chrome/Safari */
     }
 
     .left-toolbar::-webkit-scrollbar {
