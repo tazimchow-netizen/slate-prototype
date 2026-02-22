@@ -526,7 +526,7 @@ swatches.forEach((swatch, idx) => {
         fmtColorBtn.focus();
     };
 
-    swatch.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+    swatch.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
     swatch.addEventListener('click', (e) => {
         e.stopPropagation();
         handleAction();
@@ -569,7 +569,7 @@ swatches.forEach((swatch, idx) => {
 });
 
 // HEX input
-fmtHexInput.addEventListener('mousedown', (e) => e.stopPropagation());
+fmtHexInput.addEventListener('pointerdown', (e) => e.stopPropagation());
 fmtHexInput.addEventListener('click', (e) => e.stopPropagation());
 fmtHexInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -620,7 +620,7 @@ function applyTextColor(color) {
     savedSelection = null;
 }
 
-fmtColorPanel.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+fmtColorPanel.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
 fmtColorPanel.addEventListener('click', (e) => e.stopPropagation());
 
 function applyCommandToAll(element, command) {
@@ -632,11 +632,14 @@ function applyCommandToAll(element, command) {
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand(command);
-    sel.collapseToEnd();
+    // On some mobile devices, we need to ensure the toolbar stays relevant
+    if (window.innerWidth <= 768) {
+        positionTextToolbar(element);
+    }
 }
 
 const fmtBoldBtn = document.getElementById('fmtBoldBtn');
-fmtBoldBtn.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+fmtBoldBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
 fmtBoldBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (currentTextElement) {
@@ -652,7 +655,7 @@ fmtBoldBtn.addEventListener('click', (e) => {
 });
 
 const fmtItalicBtn = document.getElementById('fmtItalicBtn');
-fmtItalicBtn.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+fmtItalicBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
 fmtItalicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (currentTextElement) {
@@ -719,7 +722,7 @@ sizeOptions.forEach((opt, idx) => {
         fmtSizeBtn.focus();
     };
 
-    opt.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+    opt.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
     opt.addEventListener('click', (e) => {
         e.stopPropagation();
         selectOption();
@@ -750,7 +753,7 @@ sizeOptions.forEach((opt, idx) => {
     });
 });
 
-fmtSizeDropdown.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+fmtSizeDropdown.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
 fmtSizeDropdown.addEventListener('click', (e) => e.stopPropagation());
 
 window.addEventListener('keydown', (e) => {
@@ -767,7 +770,7 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-document.addEventListener('mousedown', (e) => {
+document.addEventListener('pointerdown', (e) => {
     if (!textFormatToolbar.contains(e.target)) {
         fmtColorPanel.classList.remove('open');
         fmtColorBtn.setAttribute('aria-expanded', 'false');
@@ -785,7 +788,7 @@ document.getElementById('fmtListBtn').addEventListener('click', (e) => {
     }
 });
 
-textFormatToolbar.addEventListener('mousedown', (e) => {
+textFormatToolbar.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     e.stopPropagation();
 });

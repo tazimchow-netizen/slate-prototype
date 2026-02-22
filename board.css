@@ -1591,11 +1591,16 @@ body {
         gap: 4px;
     }
 
+    .logo-text {
+        font-size: 0.9rem;
+    }
+
     .left-toolbar {
         width: auto;
+        max-width: 90vw;
         height: auto;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         position: fixed;
         bottom: var(--space-md);
         left: 50%;
@@ -1605,6 +1610,18 @@ body {
         border-radius: 100px;
         padding: 6px 12px;
         gap: 4px;
+        background-color: var(--color-background);
+        box-shadow: var(--shadow-lg);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        z-index: 1000;
+        scrollbar-width: none;
+        /* Hide scrollbar for Chrome/Safari */
+    }
+
+    .left-toolbar::-webkit-scrollbar {
+        display: none;
     }
 
     .toolbar-bottom {
@@ -1618,11 +1635,15 @@ body {
         padding-bottom: 0;
         width: auto;
         gap: 4px;
+        display: flex;
+        align-items: center;
     }
 
     .toolbar-btn {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        /* Slightly larger for touch */
+        height: 40px;
+        flex-shrink: 0;
     }
 
     .toolbar-btn .tooltip {
@@ -1635,10 +1656,30 @@ body {
     }
 
     .board-title {
-        max-width: 100px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 120px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .btn-feedback span,
+    .share-btn span {
+        display: none;
+    }
+
+    .btn-feedback,
+    .share-btn {
+        padding: 0 10px;
+        min-width: 40px;
+    }
+
+    .divider-vertical {
+        margin: 0 4px;
+    }
+
+    .header-right {
+        gap: 4px;
     }
 }
 
