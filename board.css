@@ -75,11 +75,9 @@ body {
     margin: 0;
     height: 100%;
     padding: 0;
-    /* Removing hardcoded padding to allow flex elements to hit the edge */
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    /* Stretch to fill height */
 }
 
 .header-left {
@@ -87,9 +85,7 @@ body {
     align-items: center;
     gap: var(--space-md);
     justify-content: flex-start;
-    /* Explicitly requested by user */
     padding-left: var(--space-md);
-    /* Match the toolbar margin if any, or flush */
 }
 
 .header-center {
@@ -105,7 +101,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    /* Explicitly requested by user */
     gap: 8px;
     padding-right: var(--space-md);
 }
@@ -171,7 +166,6 @@ body {
     align-items: center;
     gap: var(--space-xs);
 }
-
 
 .board-info {
     display: flex;
@@ -1147,6 +1141,7 @@ body {
     gap: 8px;
     min-height: 180px;
     min-width: 200px;
+    overflow: hidden;
 }
 
 .image-title {
@@ -1231,7 +1226,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    flex-shrink: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.image-options::-webkit-scrollbar {
+    display: none;
 }
 
 .image-options-row {
@@ -1242,6 +1242,7 @@ body {
 
 .image-url-input {
     flex: 1;
+    min-width: 0;
     padding: 6px 10px;
     border: 1px solid var(--color-border);
     border-radius: 6px;
