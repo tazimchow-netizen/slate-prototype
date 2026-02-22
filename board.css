@@ -585,6 +585,7 @@ body {
     user-select: none;
     box-sizing: border-box;
     will-change: transform, width, height;
+    touch-action: none;
 }
 
 [data-current-tool="trash"] .canvas-element * {

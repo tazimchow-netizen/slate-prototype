@@ -607,13 +607,13 @@ function applyTextColor(color) {
         sel.addRange(savedSelection);
     }
 
-    const sel = window.getSelection();
-    const hasExplicitSelection = sel.rangeCount > 0 && !sel.isCollapsed &&
-        currentTextElement.contains(sel.anchorNode);
-
     if (hasExplicitSelection) {
         document.execCommand('foreColor', false, color);
     } else {
+        // Apply to whole element as fallback
+        currentTextElement.style.color = color;
+
+        // Also try logic for sub-elements if any
         const range = document.createRange();
         range.selectNodeContents(currentTextElement);
         sel.removeAllRanges();
@@ -640,6 +640,16 @@ function applyCommandToAll(element, command) {
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand(command);
+
+    // Direct style fallbacks for mobile
+    if (command === 'bold') {
+        const isBold = document.queryCommandState('bold');
+        element.style.fontWeight = isBold ? 'bold' : 'normal';
+    } else if (command === 'italic') {
+        const isItalic = document.queryCommandState('italic');
+        element.style.fontStyle = isItalic ? 'italic' : 'normal';
+    }
+
     // On some mobile devices, we need to ensure the toolbar stays relevant
     if (window.innerWidth <= 768) {
         positionTextToolbar(element);
@@ -647,8 +657,8 @@ function applyCommandToAll(element, command) {
 }
 
 const fmtBoldBtn = document.getElementById('fmtBoldBtn');
-fmtBoldBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
-fmtBoldBtn.addEventListener('click', (e) => {
+fmtBoldBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (currentTextElement) {
         currentTextElement.focus();
@@ -661,10 +671,13 @@ fmtBoldBtn.addEventListener('click', (e) => {
         updateToolbarState();
     }
 });
+fmtBoldBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
 
 const fmtItalicBtn = document.getElementById('fmtItalicBtn');
-fmtItalicBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); });
-fmtItalicBtn.addEventListener('click', (e) => {
+fmtItalicBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (currentTextElement) {
         currentTextElement.focus();
@@ -676,6 +689,9 @@ fmtItalicBtn.addEventListener('click', (e) => {
         }
         updateToolbarState();
     }
+});
+fmtItalicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
 const fmtSizeBtn = document.getElementById('fmtSizeBtn');

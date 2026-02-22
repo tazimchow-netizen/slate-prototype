@@ -114,7 +114,8 @@ function addResizeHandles(element) {
         handle.className = `resize-handle resize-handle-${direction}`;
         handle.dataset.direction = direction;
 
-        handle.addEventListener('mousedown', (e) => {
+        handle.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
             e.stopPropagation();
             startResize(e, element, direction);
         });
@@ -129,7 +130,8 @@ function addResizeHandles(element) {
 
         const rotateHandle = document.createElement('div');
         rotateHandle.className = 'rotation-handle';
-        rotateHandle.addEventListener('mousedown', (e) => {
+        rotateHandle.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
             e.stopPropagation();
             startRotate(e, element);
         });
@@ -142,7 +144,9 @@ function addResizeHandles(element) {
 // DRAG FUNCTIONALITY
 
 function makeElementDraggable(element) {
-    element.addEventListener('mousedown', (e) => {
+    element.style.touchAction = 'none'; // Prevent scrolling during drag
+    element.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
         if (e.target.classList.contains('resize-handle') ||
             e.target.classList.contains('rotation-handle') ||
             e.target.classList.contains('rotation-line') ||
@@ -181,6 +185,9 @@ function startDrag(e, element) {
     element.classList.add('dragging');
     element.classList.add('no-transition');
 
+    // Pointer capture ensure events continue even if finger leaves element
+    element.setPointerCapture(e.pointerId);
+
     dragStartX = e.clientX;
     dragStartY = e.clientY;
 
@@ -194,8 +201,9 @@ function startDrag(e, element) {
 
     selectElement(element);
 
-    document.addEventListener('mousemove', onDragMove);
-    document.addEventListener('mouseup', onDragEnd);
+    document.addEventListener('pointermove', onDragMove);
+    document.addEventListener('pointerup', onDragEnd);
+    document.addEventListener('pointercancel', onDragEnd);
 }
 
 function onDragMove(e) {
@@ -228,10 +236,16 @@ function getRotation(element) {
     return match ? parseFloat(match[1]) : 0;
 }
 
-function onDragEnd() {
+function onDragEnd(e) {
     if (isDragging && selectedElement) {
         selectedElement.classList.remove('dragging');
         selectedElement.classList.remove('no-transition');
+
+        if (e && e.pointerId) {
+            try {
+                selectedElement.releasePointerCapture(e.pointerId);
+            } catch (err) { }
+        }
 
         if (beforeState && window.UndoRedo) {
             const afterLeft = selectedElement.style.left;
@@ -256,8 +270,9 @@ function onDragEnd() {
         rafId = null;
     }
 
-    document.removeEventListener('mousemove', onDragMove);
-    document.removeEventListener('mouseup', onDragEnd);
+    document.removeEventListener('pointermove', onDragMove);
+    document.removeEventListener('pointerup', onDragEnd);
+    document.removeEventListener('pointercancel', onDragEnd);
 }
 
 // RESIZE FUNCTIONALITY
@@ -276,6 +291,9 @@ function startResize(e, element, direction) {
     element.classList.add('resizing');
     element.classList.add('no-transition');
 
+    // Pointer capture ensure events continue even if finger leaves handle
+    e.target.setPointerCapture(e.pointerId);
+
     dragStartX = e.clientX;
     dragStartY = e.clientY;
 
@@ -290,8 +308,9 @@ function startResize(e, element, direction) {
         height: element.style.height
     };
 
-    document.addEventListener('mousemove', onResizeMove);
-    document.addEventListener('mouseup', onResizeEnd);
+    document.addEventListener('pointermove', onResizeMove);
+    document.addEventListener('pointerup', onResizeEnd);
+    document.addEventListener('pointercancel', onResizeEnd);
 }
 
 function startRotate(e, element) {
@@ -307,6 +326,8 @@ function startRotate(e, element) {
     const rotateHandle = e.target;
     if (rotateHandle.classList.contains('rotation-handle')) {
         rotateHandle.classList.add('active');
+        // Pointer capture for rotation
+        rotateHandle.setPointerCapture(e.pointerId);
     }
 
     const rect = element.getBoundingClientRect();
@@ -320,8 +341,9 @@ function startRotate(e, element) {
         transform: element.style.transform
     };
 
-    document.addEventListener('mousemove', onRotateMove);
-    document.addEventListener('mouseup', onRotateEnd);
+    document.addEventListener('pointermove', onRotateMove);
+    document.addEventListener('pointerup', onRotateEnd);
+    document.addEventListener('pointercancel', onRotateEnd);
 }
 
 function onRotateMove(e) {
@@ -348,7 +370,7 @@ function onRotateMove(e) {
     }
 }
 
-function onRotateEnd() {
+function onRotateEnd(e) {
     if (isRotating && selectedElement) {
         selectedElement.classList.remove('rotating');
         selectedElement.classList.remove('no-transition');
@@ -356,6 +378,11 @@ function onRotateEnd() {
         const rotateHandle = selectedElement.querySelector('.rotation-handle');
         if (rotateHandle) {
             rotateHandle.classList.remove('active');
+            if (e && e.pointerId) {
+                try {
+                    rotateHandle.releasePointerCapture(e.pointerId);
+                } catch (err) { }
+            }
         }
         updateResizeCursors(selectedElement);
 
@@ -381,8 +408,9 @@ function onRotateEnd() {
         rafId = null;
     }
 
-    document.removeEventListener('mousemove', onRotateMove);
-    document.removeEventListener('mouseup', onRotateEnd);
+    document.removeEventListener('pointermove', onRotateMove);
+    document.removeEventListener('pointerup', onRotateEnd);
+    document.removeEventListener('pointercancel', onRotateEnd);
 }
 
 function onResizeMove(e) {
@@ -449,10 +477,16 @@ function onResizeMove(e) {
     }
 }
 
-function onResizeEnd() {
+function onResizeEnd(e) {
     if (isResizing && selectedElement) {
         selectedElement.classList.remove('resizing');
         selectedElement.classList.remove('no-transition');
+
+        if (e && e.pointerId && e.target) {
+            try {
+                e.target.releasePointerCapture(e.pointerId);
+            } catch (err) { }
+        }
 
         if (beforeState && window.UndoRedo) {
             const afterState = {
@@ -483,8 +517,9 @@ function onResizeEnd() {
         rafId = null;
     }
 
-    document.removeEventListener('mousemove', onResizeMove);
-    document.removeEventListener('mouseup', onResizeEnd);
+    document.removeEventListener('pointermove', onResizeMove);
+    document.removeEventListener('pointerup', onResizeEnd);
+    document.removeEventListener('pointercancel', onResizeEnd);
 }
 
 
